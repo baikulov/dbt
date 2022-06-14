@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dict_pagetype
+    description: "Справочник с типами страниц. Формируется вручную по правилам через CASE WHEN. Грануляция до pagePath"
+    columns:
+      - name: pagePath
+        description: Адрес страницы без GET-параметров
+        tests:
+          - unique
+      - name: pageType
+        description: Присвоенный тип страницы.
+
+  - name: dict_site_categories
+    description: "Справочник с категориями по адресам верхнего уровня. Формируется из excel-файла. Грануляция до pagePath"
+    columns:
+      - name: pagePath
+        description: Адрес страницы без GET-параметров
+        tests:
+          - unique
+      - name: category_name
+        description: Присвоенное название категории.
+      - name: category_type
+        description: Присвоенная категория страниц.
+        

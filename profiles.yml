@@ -1,0 +1,19 @@
+cable:  
+  target: dev  
+  outputs:  
+    dev:  
+      type: clickhouse
+      schema: "{{ env_var('DBT_SCHEMA_DEV') }}"
+      host: "{{ env_var('DBT_HOST') }}"
+      port: 8443
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      secure: True
+    prod:  
+      type: clickhouse
+      schema: "{{ env_var('DBT_SCHEMA_PROD') }}"
+      host: "{{ env_var('DBT_HOST') }}"
+      port: 8443
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      secure: True

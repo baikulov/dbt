@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: bi_search_dict_product_view
+    description: "Данные о типах страниц. Отчёт Search. Грануляция до pagePath"
+    columns:
+      - name: pageUrl
+        description: Адрес страницы без GET-параметров
+        tests:
+          - unique
+      - name: pageType
+        description: Тип страницы на базе справочника dict_pagetype
+      - name: category_name
+        description: Присвоенное название категории на базе справочника dict_site_categories
+      - name: category_type
+        description: Присвоенный тип категории на базе справочника dict_site_categories

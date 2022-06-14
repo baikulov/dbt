@@ -1,0 +1,217 @@
+version: 2
+
+models:
+  - name: stg_sessions_devices
+    description: "Предподготовленная таблица из источника src_sessions devices. В ней лежат данные по устройствам, выгружаемые из GA. Грануляция до уровня сессии."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: browser
+        description: Браузер пользователя
+      - name: browserVersion
+        description: Версия браузера
+      - name: operatingSystem
+        description: Операционная система пользователя
+      - name: operatingSystemVersion
+        description: Версия операционной системы
+      - name: deviceCategory
+        description: Категория устройства(desktop, mobile и т.д.)
+      - name: sessionId
+        description: Уникальный идентификатор сессии
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_sessions_sources
+    description: "Предподготовленная таблица из источника src_sessions_sources. В ней лежат данные по источникам трафика, выгружаемые из GA. Грануляция до уровня сессии."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: source
+        description: Источник рекламного трафика. Значение метки utm_source
+      - name: medium
+        description: Рекламный канал. Значение метки utm_medium
+      - name: campaign
+        description: Рекламная кампания. Значение метки utm_campaign
+      - name: adContent
+        description: Содержимое объявления. Значение метки utm_medium
+      - name: keyword
+        description: Ключевая фраза или условие показа. Значение метки utm_keyword
+      - name: fullReferrer
+        description: Полный адрес, откуда пришёл трафик
+      - name: sessionId
+        description: Уникальный идентификатор сессии
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_sessions_geo
+    description: "Предподготовленная таблица из источника src_sessions_geo. В ней лежат данные по географии трафика, выгружаемые из GA. Грануляция до уровня сессии."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: country
+        description: Страна
+      - name: region
+        description: Регион
+      - name: city
+        description: Город
+      - name: latitude
+        description: Координаты долготы
+      - name: longitude
+        description: Координаты широты
+      - name: language
+        description: Язык браузера
+      - name: screenResolution
+        description: Разрешение экрана
+      - name: sessionId
+        description: Уникальный идентификатор сессии
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_sessions_events
+    description: "Предподготовленная таблица из источника src_sessions_events. В ней лежат данные по событиям, выгружаемые из GA. Грануляция до уровня хита."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: pagePath
+        description: Адрес страницы с GET-параметрами без верхнего домена.
+      - name: eventCategory
+        description: Категория события. Используется для группировки событий
+        tests:
+          - not_null
+      - name: eventAction
+        description: Действие по событию. Сюда добавить ссылку на справочник событий
+        tests:
+          - not_null
+      - name: eventLabel
+        description: Ярлыка события. В него обычно добавляют разлинчые значения
+        tests:
+          - not_null
+      - name: sessionId
+        description: Идентификатор сессии
+        tests:
+          - not_null
+      - name: hitId
+        description: Уникальный идентификатор хита
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_sessions_pages
+    description: "Предподготовленная таблица из источника src_sessions_pages. В ней лежат данные по просмотрам страниц, выгружаемые из GA. Грануляция до уровня хита."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: pagePath
+        description: Адрес страницы с GET-параметрами без верхнего домена.
+        tests:
+          - not_null
+      - name: hostname,
+        description: Домен верхнего уровня + поддомены городов.
+      - name: sessionId
+        description: Идентификатор сессии
+        tests:
+          - not_null
+      - name: hitId
+        description: Уникальный идентификатор хита
+        tests:
+          - not_null
+          - unique
+  - name: stg_prepare_hits
+    description: "Таблица в которой происходит объединение хитов pageview и events, а также создание timestamp и clientId. Грануляция до уровня хита."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: clientId
+        description: Идентификатор пользователя. Значение куки GA из браузера
+        tests:
+          - not_null
+      - name: sessionId
+        description: Идентификатор сессии
+        tests:
+          - not_null
+      - name: hitId
+        description: Уникальный идентификатор хита
+        tests:
+          - not_null
+      - name: hitTimestamp
+        description: Временная метка в формате int. Формируется в момент отправки хитов с сайта в GA
+        tests:
+          - not_null
+      - name: hitType
+        description: Тип хита(event или pageview)
+        tests:
+          - not_null
+      - name: pageUrl
+        description: Адрес страницы c GET-параметрами, на которой произошёл хит. Без домена верхнего уровня 
+      - name: pagePath
+        description: Адрес страницы без GET-параметров.
+        tests:
+          - not_null
+      - name: eventCategory
+        description: Категория события
+        tests:
+          - not_null
+      - name: eventAction
+        description: Название события
+        tests:
+          - not_null
+      - name: eventLabel
+        description: Дополнительно передаваемые значения
+        tests:
+          - not_null
+  
+  - name: stg_postfix_hits
+    description: "Таблица в которой происходит удаление дубликатов hitId и вычисление последовательностей хитов. Грануляция до уровня хита."
+    columns:
+      - name: date
+        description: Дата визита
+      - name: clientId
+        description: Идентификатор пользователя. Значение куки GA из браузера
+        tests:
+          - not_null
+      - name: sessionId
+        description: Идентификатор сессии
+        tests:
+          - not_null
+      - name: hitId
+        description: Уникальный идентификатор хита
+        tests:
+          - not_null
+          - unique
+      - name: hitTimestamp
+        description: Временная метка в формате int. Формируется в момент отправки хитов с сайта в GA
+        tests:
+          - not_null
+      - name: hitType
+        description: Тип хита(event или pageview)
+        tests:
+          - not_null
+      - name: pageUrl
+        description: Адрес страницы c GET-параметрами, на которой произошёл хит. Без домена верхнего уровня 
+      - name: pagePath
+        description: Адрес страницы без GET-параметров.
+        tests:
+          - not_null
+      - name: eventCategory
+        description: Категория события
+        tests:
+          - not_null
+      - name: eventAction
+        description: Название события
+        tests:
+          - not_null
+      - name: eventLabel
+        description: Дополнительно передаваемые значения
+        tests:
+          - not_null
+      - name: rn
+        description: Порядковый номер хитов, вспомогательный столбец
+      - name: fix_pageview
+        description: Вспомогательный столбец
+      - name: hits_sequence
+        description: Порядковый номер хита в рамках сессии
+        tests:
+          - not_null

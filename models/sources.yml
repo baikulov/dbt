@@ -1,0 +1,153 @@
+version: 2
+
+sources:
+      - name: src_dbt
+        schema: analytics_sources
+        tags: ["src"]      
+        description: "База с raw-data выгружаемыми из различных источников"
+
+        tables:
+          # Сырые данные по источникам трафика
+          - name: src_ga_export_sources
+            description: "Таблица с сырыми данными из GA по источникам трафика"
+            identifier: src_ga_export_sources
+            columns:
+              - name: ga_date
+                description: "Дата сессии"
+              - name: ga_source
+                description: "Источник трафика"
+              - name: ga_medium
+                description: "Канал трафика"
+              - name: ga_campaign
+                description: "Название рекламной кампании"
+              - name: ga_adContent
+                description: "Содержание объявления"
+              - name: ga_keyword
+                description: "Ключевая фраза объявления"
+              - name: ga_fullReferrer
+                description: "Полынй путь перехода"
+              - name: ga_dimension1
+                description: "Параметр в который передаётся идентификатор сесиии"
+              - name: ga_sessions
+                description: "Количество сессий"
+              - name: insert_date
+                description: "Дата и время загрузки данных"
+              - name: report_date
+                description: "Служебное поле для скрипта"
+          
+          # Сырые данные по устройствам      
+          - name: src_ga_export_devices
+            description: "Таблица с сырыми данными из GA по устройствам пользователей"
+            identifier: src_ga_export_devices
+            columns:
+              - name: ga_date
+                description: "Дата сессии"
+              - name: ga_browser
+                description: "Название браузера"
+              - name: ga_browserVersion
+                description: "Версия браузера"
+              - name: ga_operatingSystem
+                description: "Название операционная система"
+              - name: ga_operatingSystemVersion
+                description: "Версия операционной системы"
+              - name: ga_deviceCategory
+                description: "Тип устройства"
+              - name: ga_dimension1
+                description: "Параметр в который передаётся идентификатор сесиии"
+              - name: ga_sessions
+                description: "Количество сессий"
+              - name: insert_date
+                description: "Дата и время загрузки данных"
+              - name: report_date
+                description: "Служебное поле для скрипта"
+          
+          # Сырые данные по гео
+          - name: src_ga_export_geo
+            description: "Таблица с сырыми данными из GA по гео-данным пользователей"
+            identifier: src_ga_export_geo
+            columns:
+              - name: ga_date
+                description: "Дата сессии"
+              - name: ga_country
+                description: "Страна пользователя"
+              - name: ga_region
+                description: "Регион пользователя"
+              - name: ga_city
+                description: "Город пользователя"
+              - name: ga_latitude
+                description: "Координаты широты"
+              - name: ga_longitude
+                description: "Координаты долготы"
+              - name: ga_screenResolution
+                description: "Параметры экрана"
+              - name: ga_dimension1
+                description: "Параметр в который передаётся идентификатор сесиии"
+              - name: ga_sessions
+                description: "Количество сессий"
+              - name: insert_date
+                description: "Дата и время загрузки данных"
+              - name: report_date
+                description: "Служебное поле для скрипта"
+          
+          # Сырые данные по событиям      
+          - name: src_ga_export_events
+            description: "Таблица с сырыми данными из GA по событиям пользователей"
+            identifier: src_ga_export_events
+            columns:
+              - name: ga_date
+                description: "Дата сессии"
+              - name: ga_pagePath
+                description: "Адрес страницы с GET-параметрами"
+              - name: ga_eventCategory
+                description: "Категория событий"
+              - name: ga_eventAction
+                description: "Действие по событию"
+              - name: ga_eventLabel
+                description: "Ярлык события"
+              - name: ga_dimension1
+                description: "Параметр в который передаётся идентификатор сесиии"
+              - name: ga_dimension6
+                description: "Параметр в который передаётся идентификатор хита"
+              - name: ga_totalEvents
+                description: "Количество событий"
+              - name: insert_date
+                description: "Дата и время загрузки данных"
+              - name: report_date
+                description: "Служебное поле для скрипта"
+          
+          # Сырые данные по страницам  
+          - name: src_ga_export_pages
+            description: "Таблица с сырыми данными из GA по событиям пользователей"
+            identifier: src_ga_export_pages
+            columns:
+              - name: ga_date
+                description: "Дата сессии"
+              - name: ga_hostname
+                description: "Адрес хоста"
+              - name: ga_pagePath
+                description: "Адрес страницы с GET-параметрами"
+              - name: ga_dimension1
+                description: "Параметр в который передаётся идентификатор сесиии"
+              - name: ga_dimension6
+                description: "Параметр в который передаётся идентификатор хита"
+              - name: ga_pageviews
+                description: "Количество просмотров страниц"
+              - name: insert_date
+                description: "Дата и время загрузки данных"
+              - name: report_date
+                description: "Служебное поле для скрипта"
+          
+          # Сырые данные из справочника по категориям страниц на сайте 
+          - name: src_dict_site_categories
+            description: "Таблица с сырыми данными из GA по событиям пользователей"
+            identifier: src_dict_site_categories
+            columns:
+              - name: url
+                description: "Адрес страницы без GET-параметров и домена"
+                tests:
+                  - not_null
+                  - unique
+              - name: name
+                description: "Русскоязычное название"
+              - name: type
+                description: "Тип страницы из справочника"
