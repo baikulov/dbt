@@ -1,0 +1,125 @@
+version: 2
+
+models:
+  - name: presets_sessions
+    description: "Основная таблица с данными по сессиям. Данные выгружаются из GA. Грануляция до уровня сессии."
+    columns:
+    - name: date
+      description: Дата визита
+      tests:
+        - is_exist_date
+    - name: sessionId
+      description: Дата визита
+      tests:
+        - not_null
+        - unique
+    - name: source
+      tests:
+        - not_null
+      description: Дата визита
+    - name: medium
+      tests:
+        - not_null
+      description: Дата визита
+    - name: campaign
+      description: Дата визита
+    - name: adContent
+      description: Дата визита
+    - name: keyword
+      description: Дата визита
+    - name: fullReferrer
+      description: Дата визита
+    - name: country
+      description: Дата визита
+    - name: region
+      description: Дата визита
+    - name: city
+      description: Дата визита
+    - name: latitude
+      description: Дата визита
+    - name: longitude
+      description: Дата визита
+    - name: language
+      description: Дата визита
+    - name: screenResolution
+      description: Дата визита
+    - name: browser
+      description: Дата визита
+    - name: browserVersion
+      description: Дата визита
+    - name: operatingSystem
+      description: Дата визита
+    - name: operatingSystemVersion
+      description: Дата визита
+    - name: deviceCategory
+      description: Дата визита
+      tests:
+        - not_null
+
+  - name: presets_hits
+    description: "Основная таблица с хитами. На базе выгрузки из GA. Грануляция до уровня хита."
+    columns:
+      - name: date
+        description: Дата визита
+        tests:
+          - is_exist_date
+      - name: clientId
+        description: Идентификатор пользователя. Значение куки GA из браузера
+        tests:
+          - not_null
+      - name: sessionId
+        description: Идентификатор сессии
+        tests:
+          - not_null
+      - name: hitId
+        description: Уникальный идентификатор хита
+        tests:
+          - not_null
+          - unique
+      - name: hitTimestamp
+        description: Временная метка в формате int. Формируется в момент отправки хитов с сайта в GA
+        tests:
+          - not_null
+      - name: hitType
+        description: Тип хита(event или pageview)
+        tests:
+          - not_null
+      - name: pageUrl
+        description: Адрес страницы c GET-параметрами, на которой произошёл хит. Без домена верхнего уровня 
+      - name: pagePath
+        description: Адрес страницы без GET-параметров.
+        tests:
+          - not_null
+      - name: eventCategory
+        description: Категория события
+        tests:
+          - not_null
+      - name: eventAction
+        description: Название события
+        tests:
+          - not_null
+      - name: eventLabel
+        description: Дополнительно передаваемые значения
+        tests:
+          - not_null
+      - name: isFirstPage
+        description: Является ли страница первой в сессии.
+        tests:
+          - not_null
+          - is_pageview_hit
+      - name: isLastPage
+        description: Является ли страница последней в сессии.
+        tests:
+          - not_null
+          - is_pageview_hit
+      - name: attributed_event
+        tests:
+          - not_null
+        description: Атрибутированный номер хита.Например, все хиты на 3 странице в рамках сессии будут иметь номер 3.
+      - name: pageview_sequence
+        description: Порядковый номер хита pageview в рамках сессии
+      - name: hits_sequence
+        description: Порядковый номер любого хита в рамках сессии
+        tests:
+          - not_null
+          - is_pageview_hit
