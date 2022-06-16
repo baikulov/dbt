@@ -14,6 +14,8 @@ sources:
             columns:
               - name: ga_date
                 description: "Дата сессии"
+                tests:
+                  - is_exist_date
               - name: ga_source
                 description: "Источник трафика"
               - name: ga_medium
@@ -42,6 +44,8 @@ sources:
             columns:
               - name: ga_date
                 description: "Дата сессии"
+                tests:
+                  - is_exist_date
               - name: ga_browser
                 description: "Название браузера"
               - name: ga_browserVersion
@@ -68,6 +72,8 @@ sources:
             columns:
               - name: ga_date
                 description: "Дата сессии"
+                tests:
+                  - is_exist_date
               - name: ga_country
                 description: "Страна пользователя"
               - name: ga_region
@@ -96,6 +102,8 @@ sources:
             columns:
               - name: ga_date
                 description: "Дата сессии"
+                tests:
+                  - is_exist_date
               - name: ga_pagePath
                 description: "Адрес страницы с GET-параметрами"
               - name: ga_eventCategory
@@ -122,6 +130,8 @@ sources:
             columns:
               - name: ga_date
                 description: "Дата сессии"
+                tests:
+                  - is_exist_date
               - name: ga_hostname
                 description: "Адрес хоста"
               - name: ga_pagePath
