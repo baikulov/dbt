@@ -6,6 +6,9 @@ name: 'cable'
 version: '1.0.0'
 config-version: 2
 
+vars:
+    execution_date: 'toDate(NOW()) - 1'
+
 # This setting configures which "profile" dbt uses for this project.
 profile: 'cable'
 
