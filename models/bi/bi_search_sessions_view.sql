@@ -9,14 +9,14 @@ ses as (
     region,
     city
   FROM {{ ref('presets_sessions') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01' --toDate(NOW())-28
 ),
 landing as (
   SELECT
     sessionId,
     pageUrl as landingPage
   FROM {{ ref('presets_hits') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01'--toDate(NOW())-28
   AND hitType = 'pageview'
   AND hits_sequence = 1
 ),
@@ -25,7 +25,7 @@ pgvs as (
     sessionId,
     count(distinct hitId) as pageviews
   FROM {{ ref('presets_hits') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01'--toDate(NOW())-28
   AND hitType = 'pageview'
   GROUP BY sessionId
 ),
@@ -34,7 +34,7 @@ adds as (
     sessionId,
     count(distinct sessionId) as addToCart_step
   FROM {{ ref('presets_hits') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01' --toDate(NOW())-28
   AND eventAction like '%addToCart%'
   GROUP BY sessionId
 ),
@@ -43,7 +43,7 @@ checkout as (
     sessionId,
     count(distinct sessionId) as chekoutView_step
   FROM {{ ref('presets_hits') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01' --toDate(NOW())-28
   AND pageUrl like '%checkout/contacts%'
   GROUP BY sessionId
 ),
@@ -52,7 +52,7 @@ purchase as (
     sessionId,
     count(distinct sessionId) as purchase_step
   FROM {{ ref('presets_hits') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01' --toDate(NOW())-28
   AND pageUrl like '%/checkout/success%'
   GROUP BY sessionId
 ),
@@ -61,7 +61,7 @@ srch as (
     sessionId,
     count(distinct sessionId) as isSearch
   FROM {{ ref('presets_hits') }}
-  WHERE date >= toDate(NOW())-28
+  WHERE date >= '2022-04-01' --toDate(NOW())-28
   AND eventAction like '%search_%'
   GROUP BY sessionId
 )
